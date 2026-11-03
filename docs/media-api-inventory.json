@@ -1,0 +1,1794 @@
+{
+  "endpoints": [
+    {
+      "name": "sliceUploadFile",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/sliceUploadFile'"
+        }
+      ]
+    },
+    {
+      "name": "outVerificationCode",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + \"/api/entrance.php?method=CAPTCHA&phone=\" + phone"
+        }
+      ]
+    },
+    {
+      "name": "getActivationConfig",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "Config.activationConfig1 + Math.round(Number(new Date()) / 1000)"
+        }
+      ]
+    },
+    {
+      "name": "encryptionModel",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/commonModel.php'"
+        }
+      ]
+    },
+    {
+      "name": "getUser",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_admin?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addUser",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_admin?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editUser",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_admin/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "delUser",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_admin/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getDepartment",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_department?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addDepartment",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_department?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editDepartment",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_department/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "delDepartment",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_department/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getAuthRule",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_auth_rule?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addAuthRule",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_auth_rule?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editAuthRule",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_auth_rule/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "delAuthRule",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_auth_rule/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getOperateLog",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_operation_log?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addOperateLog",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_operation_log?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "delOperateLog",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_operation_log/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getEventLog",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_event?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addEventLog",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/apikey.php/records/think_event?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getOrganization",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_organization'"
+        }
+      ]
+    },
+    {
+      "name": "addOrganization",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_organization?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editOrganization",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_organization/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "delOrganization",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_organization/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getAuthGroup",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_auth_group?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addAuthGroup",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_auth_group?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editAuthGroup",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_auth_group/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "delAuthGroup",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_auth_group/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getEmpower",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_empower?database=zuad_common&join=think_system_version'"
+        }
+      ]
+    },
+    {
+      "name": "addEmpower",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_empower?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editEmpower",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_empower/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "delEmpower",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_empower/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getConfig",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_config?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addConfig",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_config?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editConfig",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_config/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "delConfig",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_config/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getDeviceEmpower",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_device_empower?database=zuad_common&join=think_empower'"
+        }
+      ]
+    },
+    {
+      "name": "editDeviceEmpower",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_device_empower/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getOrder",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_order?database=zuad_common&join=think_organization'"
+        }
+      ]
+    },
+    {
+      "name": "addOrder",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_order?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editOrder",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_order/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getDownloadLog",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_download_log?database=zuad_common&join=think_organization'"
+        }
+      ]
+    },
+    {
+      "name": "getFlowPool",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_flow_pool?database=zuad_common&join=think_organization'"
+        }
+      ]
+    },
+    {
+      "name": "addFlowPool",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_flow_pool?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editFlowPool",
+      "module": "src/api/common.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_flow_pool/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getUserKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_admin?database=zuad_common&include=id,username,real_name,englishName,nickname,password,org_num,portrait,groupid,department_id'"
+        }
+      ]
+    },
+    {
+      "name": "addUserKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/apikey.php/records/think_admin?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editUserKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/apikey.php/records/think_admin/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addOperateLogKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/apikey.php/records/think_operation_log?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addEventLogKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/apikey.php/records/think_event?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getOrganizationKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_organization?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addOrganizationKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/apikey.php/records/think_organization?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "editOrganizationKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/apikey.php/records/think_organization/' + id +'?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getEmpowerKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_empower?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addEmpowerKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/apikey.php/records/think_empower?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getConfigKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_config?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "addConfigKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/apikey.php/records/think_config?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getFlowPoolKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_flow_pool?database=zuad_common&join=think_organization'"
+        }
+      ]
+    },
+    {
+      "name": "addFlowPoolKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/apikey.php/records/think_flow_pool?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "getVerificationCodeKey",
+      "module": "src/api/commonKey.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_verification_code?database=zuad_common'"
+        }
+      ]
+    },
+    {
+      "name": "uploadFile",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/uploadMaterialFile'"
+        }
+      ]
+    },
+    {
+      "name": "uploadMaterialFile",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api/v5/program_model/uploadMaterialFile'"
+        }
+      ]
+    },
+    {
+      "name": "getNotice",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_notice'"
+        }
+      ]
+    },
+    {
+      "name": "getPlayHistory",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_play_history?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addPlayHistory",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_play_history?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "delPlayHistory",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_play_history/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getEvent",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api/commons/event_model/getEvent'"
+        }
+      ]
+    },
+    {
+      "name": "getTask",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_task?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addTask",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_task'"
+        }
+      ]
+    },
+    {
+      "name": "delTask",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_task/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getPlan",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_plan?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addPlan",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api/v5/plan_model/addPlan'"
+        }
+      ]
+    },
+    {
+      "name": "editPlan",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api/v5/plan_model/editPlan'"
+        }
+      ]
+    },
+    {
+      "name": "delPlan",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api/v5/plan_model/delPlan'"
+        }
+      ]
+    },
+    {
+      "name": "startUpPlan",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api/v5/plan_model/startUpPlan'"
+        }
+      ]
+    },
+    {
+      "name": "getRegion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_region?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addRegion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_region'"
+        }
+      ]
+    },
+    {
+      "name": "editRegion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_region/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delRegion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_region/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getGrouping",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_grouping?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addGrouping",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_grouping'"
+        }
+      ]
+    },
+    {
+      "name": "editGrouping",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_grouping/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delGrouping",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_grouping/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getDeviceType",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_device_type?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addDeviceType",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_device_type'"
+        }
+      ]
+    },
+    {
+      "name": "editDeviceType",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_device_type/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delDeviceType",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_device_type/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getSeats",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_seats?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addSeats",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_seats'"
+        }
+      ]
+    },
+    {
+      "name": "editSeats",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_seats/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delSeats",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_seats/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getOneScreen",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_screen/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getScreen",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_screen?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addScreen",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_screen'"
+        }
+      ]
+    },
+    {
+      "name": "editScreen",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_screen/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delScreen",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_screen/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getAbortion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_people_counting?database=media&join=think_default_play'"
+        }
+      ]
+    },
+    {
+      "name": "addAbortion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_people_counting'"
+        }
+      ]
+    },
+    {
+      "name": "editAbortion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_people_counting/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delAbortion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_people_counting/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getPeopleCount",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_people_count?database=media&join=think_default_play'"
+        }
+      ]
+    },
+    {
+      "name": "addPeopleCount",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_people_count'"
+        }
+      ]
+    },
+    {
+      "name": "editPeopleCount",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_people_count/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delPeopleCount",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_people_count/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getDevices",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_device?database=media&join=think_default_play'"
+        }
+      ]
+    },
+    {
+      "name": "addDevice",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_device'"
+        }
+      ]
+    },
+    {
+      "name": "editDevice",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_device/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delDevice",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_device/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getFindDeviceConfig",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_device_config?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "editFindDeviceConfig",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_device_config/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getDeviceGroup",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_device_group?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addDeviceGroup",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_device_group'"
+        }
+      ]
+    },
+    {
+      "name": "editDeviceGroup",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_device_group/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delDeviceGroup",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_device_group/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getLayouts",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_layout?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addLayout",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_layout'"
+        }
+      ]
+    },
+    {
+      "name": "editLayout",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_layout/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delLayout",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_layout/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getTemplate",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_template?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addTemplate",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_template'"
+        }
+      ]
+    },
+    {
+      "name": "editTemplate",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_template/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delTemplate",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_template/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getLayoutGroup",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_layout_group?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addLayoutGroup",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "\"post\"",
+          "url": "server + '/api.php/records/think_layout_group'"
+        }
+      ]
+    },
+    {
+      "name": "editLayoutGroup",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_layout_group/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delLayoutGroup",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_layout_group/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getMedia",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_media?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "getMediaKey",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_media?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addMedia",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_media'"
+        }
+      ]
+    },
+    {
+      "name": "editMedia",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_media/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delMedia",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_media/' + data"
+        }
+      ]
+    },
+    {
+      "name": "getSchedule",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_schedule?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addSchedule",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_schedule'"
+        }
+      ]
+    },
+    {
+      "name": "editSchedule",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_schedule/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delSchedule",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_schedule/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getInsertion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_urgent_insert?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addInsertion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_urgent_insert'"
+        }
+      ]
+    },
+    {
+      "name": "editInsertion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_urgent_insert/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delInsertion",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_urgent_insert/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getMonitor",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_monitor?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addMonitor",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_monitor'"
+        }
+      ]
+    },
+    {
+      "name": "editMonitor",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_monitor/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delMonitor",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_monitor/' + id"
+        }
+      ]
+    },
+    {
+      "name": "ImportMonitor",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api/v5/monitor_model/importMonitor'"
+        }
+      ]
+    },
+    {
+      "name": "exportMonitor",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'GET'",
+          "url": "server + `/api/v5/monitor_model/exportMonitor`"
+        }
+      ]
+    },
+    {
+      "name": "startUpWebRtc",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api/v5/monitor_model/startUpWebRtc'"
+        }
+      ]
+    },
+    {
+      "name": "monitorPtzControl",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'GET'",
+          "url": "Config.PTZControl + `api/v1/gb28181`"
+        }
+      ]
+    },
+    {
+      "name": "getInputStream",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_input_stream?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addInputStream",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_input_stream'"
+        }
+      ]
+    },
+    {
+      "name": "editInputStream",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_input_stream/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delInputStream",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_input_stream/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getFixedTime",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_fixed_time?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addFixedTime",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_fixed_time'"
+        }
+      ]
+    },
+    {
+      "name": "editFixedTime",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_fixed_time/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delFixedTime",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_fixed_time/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getProduct",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_commodity?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addProduct",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_commodity'"
+        }
+      ]
+    },
+    {
+      "name": "editProduct",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_commodity/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delProduct",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_commodity/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getApkRenew",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_apk_renew?database=media&join=think_device_type&join=think_media'"
+        }
+      ]
+    },
+    {
+      "name": "getApkRenewKey",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_apk_renew?database=media&join=think_device_type&join=think_media'"
+        }
+      ]
+    },
+    {
+      "name": "getApkRenewKey2",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_apk_renew?database=meeting_dingding&join=think_device_types&join=think_media'"
+        }
+      ]
+    },
+    {
+      "name": "getApkRenewKey3",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/apikey.php/records/think_apk_renew?database=central_control&join=think_device_types&join=think_media'"
+        }
+      ]
+    },
+    {
+      "name": "addApkRenew",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_apk_renew'"
+        }
+      ]
+    },
+    {
+      "name": "editApkRenew",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_apk_renew/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delApkRenew",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_apk_renew/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getDownloadLog",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_download_log?database=media&join=think_device&join=think_layout'"
+        }
+      ]
+    },
+    {
+      "name": "exportProgram",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/exportProgram'"
+        }
+      ]
+    },
+    {
+      "name": "exportTemplate",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/exportTemplate'"
+        }
+      ]
+    },
+    {
+      "name": "uploadHtmlSource",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/uploadHtmlSource'"
+        }
+      ]
+    },
+    {
+      "name": "getSignageTemplateList",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_web_url_list?database=media'"
+        }
+      ]
+    },
+    {
+      "name": "addSignageTemplate",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "'post'",
+          "url": "server + '/api.php/records/think_web_url_list'"
+        }
+      ]
+    },
+    {
+      "name": "editSignageTemplate",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"PUT\"",
+          "url": "server + '/api.php/records/think_web_url_list/' + id"
+        }
+      ]
+    },
+    {
+      "name": "delSignageTemplate",
+      "module": "src/api/media.ts",
+      "requests": [
+        {
+          "method": "on_off ? 'post' : \"DELETE\"",
+          "url": "server + '/api.php/records/think_web_url_list/' + id"
+        }
+      ]
+    },
+    {
+      "name": "getMonitor",
+      "module": "src/api/monitoringAnalysis.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_monitor?database=monitoring_analysis'"
+        }
+      ]
+    },
+    {
+      "name": "getMonitorType",
+      "module": "src/api/monitoringAnalysis.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_monitor_type?database=monitoring_analysis'"
+        }
+      ]
+    },
+    {
+      "name": "getRegion",
+      "module": "src/api/monitoringAnalysis.ts",
+      "requests": [
+        {
+          "method": "'get'",
+          "url": "server + '/api.php/records/think_region?database=monitoring_analysis'"
+        }
+      ]
+    },
+    {
+      "name": "getProxyPayment",
+      "module": "src/api/weChat.ts",
+      "requests": [
+        {
+          "method": "\"POST\"",
+          "url": "server + '/api/procReqsModel.php?method=ProxyPayment'"
+        }
+      ]
+    }
+  ]
+}

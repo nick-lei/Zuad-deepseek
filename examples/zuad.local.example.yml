@@ -1,0 +1,13 @@
+- id: zuad-media
+  name: dsh-plugin-zuad-media
+  config:
+    baseUrl: ''
+    orgNum: ''
+    authMode: apiKey
+    actorUid: ''
+    actorNickname: ''
+    usernameEnv: ZUAD_USERNAME
+    passwordEnv: ZUAD_PASSWORD
+    apiKeyEnv: ZUAD_API_KEY
+    timeoutMs: 60000
+    signCodeEnv: ZUAD_SIGN_CODE

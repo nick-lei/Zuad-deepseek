@@ -1,0 +1,6 @@
+* text=auto eol=lf
+*.otf binary
+*.jpg binary
+*.png binary
+*.tgz binary
+assets/playback.mjs whitespace=-blank-at-eol

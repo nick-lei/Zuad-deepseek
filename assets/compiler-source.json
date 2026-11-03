@@ -1,0 +1,36 @@
+{
+  "sources": [
+    {
+      "path": "lib/builder/js/myslider.builder.min.mycustom.js",
+      "sha256": "339bf497f13c67a0fb660561cf60d5b7504ed27f2a6a0abfae82df20714ee3bd"
+    },
+    {
+      "path": "lib/builder/js/uploadFileType.js",
+      "sha256": "7d7f95496f5440baf2ace0f4d8b56e139c1995dca1c478dc22892e924434c078"
+    }
+  ],
+  "functions": [
+    "correctFun",
+    "escapeHtmlAttribute",
+    "normalizeWebMixedResourcePath",
+    "normalizeWebMixedData",
+    "normalizeWebBrowserData",
+    "getWebMixedSummary",
+    "uuid2",
+    "convertToHTMLSymbol",
+    "newSlide",
+    "newItem",
+    "CardTemplate_1",
+    "generateTableHTML",
+    "base64encode",
+    "utf16to8",
+    "inArrays",
+    "getPreviewImageFun2",
+    "generateMarkup",
+    "generateJS"
+  ],
+  "objects": [
+    "ItemCreate",
+    "Generator"
+  ]
+}

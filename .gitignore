@@ -1,0 +1,9 @@
+node_modules/
+files/
+downloads/
+test-results/
+.env
+.env.*
+*.local.yml
+*.tgz
+.release/

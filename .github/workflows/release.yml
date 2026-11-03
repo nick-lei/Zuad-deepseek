@@ -1,0 +1,34 @@
+name: Publish Plugin Release
+
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.1
+          cache: npm
+      - name: Verify Release Tag
+        shell: bash
+        run: |
+          node --input-type=module -e 'import p from "./package.json" with { type: "json" }; if (process.env.GITHUB_REF_NAME !== `v${p.version}`) throw new Error("Release tag must match package version");'
+      - run: npm ci
+      - run: npm run check
+      - name: Verify Tracked Build
+        run: git diff --exit-code -- lib/
+      - name: Package And Publish
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          npm pack --ignore-scripts
+          archive=$(node --input-type=module -e 'import p from "./package.json" with { type: "json" }; console.log(`${p.name}-${p.version}.tgz`);')
+          gh release create "$GITHUB_REF_NAME" "$archive" --verify-tag --title "Zuad Signage Assistant $GITHUB_REF_NAME" --generate-notes

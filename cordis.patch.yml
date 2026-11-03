@@ -1,0 +1,4 @@
+- insert:
+    - id: zuad-media
+      name: dsh-plugin-zuad-media
+      config: {}
