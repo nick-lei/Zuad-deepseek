@@ -33,6 +33,12 @@ github:nick-lei/Zuad-deepseek#v0.1.0
 
 也可以在 [版本发布页](https://github.com/nick-lei/Zuad-deepseek/releases) 下载 `.tgz` 安装包，或将该附件的下载链接填入“添加插件”。支持 DSH `0.2.1-rc.5` 与 `0.2.2-alpha.2`；其他版本需要另行验证。
 
+使用“发现”页面安装时，先启用“自定义插件索引”，在“添加索引源”中填写：
+
+```text
+https://raw.githubusercontent.com/nick-lei/Zuad-deepseek/main/market/index.json
+```
+
 1. 在插件详情页启用“Zuad 信发助手”。
 2. 填写后台地址、组织编号、操作用户 UID 和操作人名称，点击“保存配置”。这些信息可向系统管理员获取。
 3. 在对话中说明你要完成的工作。第一次使用可以先说：“检查信发系统是否连接正常，并列出我已有的节目。”

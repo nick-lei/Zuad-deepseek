@@ -1,0 +1,38 @@
+{
+  "format": 1,
+  "title": {
+    "en": "Zuad Plugins",
+    "zh": "Zuad 插件中心"
+  },
+  "plugins": [
+    {
+      "name": "dsh-plugin-zuad-media",
+      "title": {
+        "en": "Zuad Signage Assistant",
+        "zh": "Zuad 信发助手"
+      },
+      "description": {
+        "en": "Create signage programs, manage media, schedule playback and operate devices through conversation.",
+        "zh": "用对话制作节目、管理素材、安排播放与操作设备，支持九宫格、图片轮播和图文分屏。"
+      },
+      "homepage": "https://github.com/nick-lei/Zuad-deepseek#readme",
+      "repository": {
+        "url": "https://github.com/nick-lei/Zuad-deepseek"
+      },
+      "versions": [
+        {
+          "version": "0.1.0",
+          "publishTimestamp": 1793673151,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/nick-lei/Zuad-deepseek",
+            "commit": "d6bad6a23b1ffb446b38ad8f17804acc23ea42d0"
+          },
+          "engines": {
+            "dsh": "0.2.1-rc.5 || 0.2.2-alpha.2"
+          }
+        }
+      ]
+    }
+  ]
+}
