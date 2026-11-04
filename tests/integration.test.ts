@@ -30,8 +30,8 @@ async function setup(authMode: 'apiKey' | 'session') {
   table('devices').push({ id: 21, org_num: '1001', device_id: 'SERIAL-A', device_name: 'Lobby', layout_id: 0 }, { id: 22, org_num: '1001', device_id: 'SERIAL-B', device_name: 'Shop', layout_id: 0 });
   table('device_groups').push({ id: 31, org_num: '1001', group_name: 'All', device_id: '21,22' });
   table('program_groups').push({ id: 41, org_num: '1001', group_name: 'Rotation', layout_id: '11' });
-  const calls: { method: string; httpMethod: string; methodOverride: unknown; path: string; query: URLSearchParams; body: any; cookie: string; apiKey: string }[] = [];
-  const options = { failDevice: '', failAudit: false, roleDevices: '', ignoreScope: false, badLogin: false, disconnectWrite: false, failRegister: false, pageSize: Infinity, repeatQueryPage: false, uploadMetadata: {} as Data, queryGate: undefined as Promise<void> | undefined };
+  const calls: { method: string; httpMethod: string; methodOverride: unknown; path: string; query: URLSearchParams; body: any; cookie: string; apiKey: string; signCode: string }[] = [];
+  const options = { failDevice: '', failAudit: false, roleDevices: '', ignoreScope: false, badLogin: false, sessionStatus: 0, loginData: {} as Data, disconnectWrite: false, failRegister: false, pageSize: Infinity, repeatQueryPage: false, uploadMetadata: {} as Data, queryGate: undefined as Promise<void> | undefined };
   let nextId = 100;
   const server = createServer(async (req, res) => {
     const chunks: Buffer[] = [];
@@ -40,12 +40,13 @@ async function setup(authMode: 'apiKey' | 'session') {
     const url = new URL(req.url!, 'http://127.0.0.1');
     const method = String(req.headers['x-http-method-override'] ?? req.method);
     const body = String(req.headers['content-type']).includes('application/json') && text ? JSON.parse(text) : text;
-    calls.push({ method, httpMethod: req.method!, methodOverride: req.headers['x-http-method-override'], path: url.pathname, query: url.searchParams, body, cookie: req.headers.cookie ?? '', apiKey: String(req.headers['x-api-key'] ?? '') });
+    calls.push({ method, httpMethod: req.method!, methodOverride: req.headers['x-http-method-override'], path: url.pathname, query: url.searchParams, body, cookie: req.headers.cookie ?? '', apiKey: String(req.headers['x-api-key'] ?? ''), signCode: String(req.headers['sign-code'] ?? '') });
     const send = (value: unknown, status = 200) => { res.writeHead(status, { 'Content-Type': 'application/json' }); res.end(JSON.stringify(value)); };
     if (url.pathname === '/api.php/login') {
       res.setHeader('Set-Cookie', 'sid=mock-session; Path=/; HttpOnly');
-      send(options.badLogin ? { code: 1023 } : { id: 7, org_num: '1001', nickname: 'Operator', status: 1, device_rules: options.roleDevices }); return;
+      send(options.badLogin ? { code: 1023 } : { id: 7, org_num: '1001', nickname: 'Operator', status: 1, device_rules: options.roleDevices, ...options.loginData }); return;
     }
+    if (authMode === 'session' && options.sessionStatus) { send({ error: 'session access refused' }, options.sessionStatus); return; }
     if (url.pathname.startsWith('/apikey.php/') || authMode === 'apiKey') {
       if (req.headers['x-api-key'] !== 'test-api-key-never-render') { send({ error: 'invalid API key' }, 401); return; }
     } else if (!req.headers.cookie?.includes('sid=mock-session')) { send({ error: 'not authenticated' }, 401); return; }
@@ -92,6 +93,7 @@ async function setup(authMode: 'apiKey' | 'session') {
 
 test('login uses cookies, pins organization, serializes filters and paginates', () => fixture(async f => {
   await f.client.query('devices', { filters: ['device_name,cs,o'], include: 'device_name', limit: 1 });
+  assert.equal(f.client.connectionStatus().connected, true);
   const query = f.calls.at(-1)!;
   assert.match(query.cookie, /sid=mock-session/);
   assert.deepEqual(query.query.getAll('filter[]'), ['device_name,cs,o', 'org_num,eq,1001']);
@@ -102,6 +104,124 @@ test('login uses cookies, pins organization, serializes filters and paginates', 
   assert.equal(f.calls.filter(v => v.path === '/api.php/login').length, 1);
   await assert.rejects(f.client.query('devices', { filters: ['bad filter'] }));
   await assert.rejects(f.client.update('devices', '21,22', {}));
+}));
+
+test('account login discovers organization and identity without deployment credentials', () => fixture(async f => {
+  Object.assign(f.config, { orgNum: '', actorUid: '', username: 'ordinary-user', password: 'mock-account-password',
+    usernameEnv: 'UNSET_ACCOUNT_USER', passwordEnv: 'UNSET_ACCOUNT_PASSWORD', apiKeyEnv: 'UNSET_ACCOUNT_KEY' });
+  assert.equal(f.client.connectionStatus().connected, false);
+  const identity = await f.client.verifyConnection();
+  assert.equal(identity.orgNum, '1001'); assert.equal(identity.uid, '7');
+  const login = f.calls.find(call => call.path === '/api.php/login')!;
+  assert.deepEqual(login.body, { username: 'ordinary-user', password: 'mock-account-password', orgNum: '', orgNums: '' });
+  const query = f.calls.at(-1)!;
+  assert.equal(query.path, '/api.php/records/think_layout');
+  assert.deepEqual(query.query.getAll('filter[]'), ['org_num,eq,1001']);
+  assert.equal(query.apiKey, ''); assert.match(query.cookie, /sid=mock-session/);
+  const status = f.client.connectionStatus();
+  assert.equal(status.connected, true); assert.equal(status.hasPassword, true);
+  assert.doesNotMatch(JSON.stringify(status), /mock-account-password|mock-session/);
+  await f.client.logout();
+  assert.equal(f.client.connectionStatus().connected, false);
+}));
+
+test('sign-out blocks automatic login even when deployment credentials exist', () => fixture(async f => {
+  f.config.sessionEnabled = false;
+  await assert.rejects(f.client.verifyConnection(), /sign in/);
+  assert.equal(f.calls.length, 0);
+  assert.equal(f.client.connectionStatus().connected, false);
+}));
+
+test('a configured account never borrows the deployment password', () => fixture(async f => {
+  Object.assign(f.config, { username: 'another-user', password: '' });
+  await assert.rejects(f.client.verifyConnection(), /account and password/);
+  assert.equal(f.calls.length, 0);
+  assert.equal(f.client.connectionStatus().hasPassword, false);
+}));
+
+test('account Sign-Code is used for backend requests and omitted from connection facts', () => fixture(async f => {
+  f.options.loginData = { sign_id: 'mock-account-sign-code' };
+  await f.client.verifyConnection();
+  assert.equal(f.calls.at(-1)!.signCode, 'mock-account-sign-code');
+  assert.doesNotMatch(JSON.stringify(f.client.connectionStatus()), /mock-account-sign-code/);
+  await f.client.logout();
+  assert.equal(f.client.connectionStatus().connected, false);
+}));
+
+test('account roles retain device restrictions after automatic organization discovery', () => fixture(async f => {
+  f.config.orgNum = '';
+  f.options.loginData = { groupid: 3 };
+  f.table('roles').push({ id: 3, org_num: '1001', device_rules: '21' });
+  await f.client.verifyConnection();
+  const devices = await f.client.all('devices');
+  assert.deepEqual(devices.map(device => device.id), [21]);
+  await assert.rejects(f.client.get('devices', '22'), /not authorized/);
+  f.options.ignoreScope = true;
+  await assert.rejects(f.client.query('devices'), /outside the account scope/);
+}));
+
+test('failed or disabled account login leaves no connected state', () => fixture(async f => {
+  f.config.orgNum = '';
+  f.options.badLogin = true;
+  await assert.rejects(f.client.verifyConnection(), /Backend rejected/);
+  assert.equal(f.client.connectionStatus().connected, false);
+  assert.equal(f.calls.length, 1);
+  f.options.badLogin = false;
+  f.options.loginData = { status: 0 };
+  await assert.rejects(f.client.verifyConnection(), /Login rejected/);
+  assert.equal(f.calls.length, 2);
+}));
+
+test('signed-out tools return a login action without exposing credentials or contacting the backend', () => fixture(async f => {
+  const active = plugin.createTools({ ...f.config, sessionEnabled: false });
+  const exec = { signal: new AbortController().signal } as any;
+  try {
+    const query = await active.tools.find(tool => tool.name === 'zuad_query')!.execute({ resource: 'programs' }, exec);
+    assert.equal(query.code, 'AUTH_REQUIRED'); assert.equal(query.reason, 'not_signed_in');
+    assert.equal(query.recovery.action, 'open_plugin_settings');
+    assert.equal(query.recovery.package, 'dsh-plugin-zuad-media');
+    const write = await active.tools.find(tool => tool.name === 'zuad_record')!.execute({ operation: 'create', resource: 'regions', data: { name: 'Unwritten' } }, exec);
+    assert.equal(write.code, 'AUTH_REQUIRED'); assert.equal(write.uncertain, false);
+    assert.equal(f.calls.length, 0);
+    assert.doesNotMatch(JSON.stringify([query, write]), /test-password-never-render|test-api-key-never-render/);
+  } finally { await active.close(); }
+}));
+
+test('an expired account session offers login without replaying the failed operation', () => fixture(async f => {
+  const active = plugin.createTools(f.config);
+  try {
+    await active.client.verifyConnection();
+    f.options.sessionStatus = 401;
+    const before = f.calls.length;
+    const result = await active.tools.find(tool => tool.name === 'zuad_query')!.execute({ resource: 'programs' }, { signal: new AbortController().signal } as any);
+    assert.equal(result.code, 'AUTH_REQUIRED'); assert.equal(result.reason, 'expired');
+    assert.equal(f.calls.length, before + 1);
+    assert.equal(active.client.connectionStatus().connected, false);
+    assert.equal(f.calls.filter(call => call.path === '/api.php/login').length, 1);
+  } finally { await active.close(); }
+}));
+
+test('a forbidden operation stays a permission error and retains a verified account session', () => fixture(async f => {
+  const active = plugin.createTools(f.config);
+  try {
+    await active.client.verifyConnection();
+    f.options.sessionStatus = 403;
+    const result = await active.tools.find(tool => tool.name === 'zuad_query')!.execute({ resource: 'programs' }, { signal: new AbortController().signal } as any);
+    assert.equal(result.ok, false); assert.equal(result.code, undefined);
+    assert.match(result.error, /HTTP 403/);
+    assert.equal(active.client.connectionStatus().connected, true);
+  } finally { await active.close(); }
+}));
+
+test('rejected saved credentials offer account correction rather than reporting an expired session', () => fixture(async f => {
+  const active = plugin.createTools(f.config);
+  f.options.badLogin = true;
+  try {
+    const result = await active.tools.find(tool => tool.name === 'zuad_session')!.execute({}, { signal: new AbortController().signal } as any);
+    assert.equal(result.code, 'AUTH_REQUIRED'); assert.equal(result.reason, 'credentials_rejected');
+    assert.equal(f.calls.length, 1);
+    assert.doesNotMatch(JSON.stringify(result), /test-password-never-render/);
+  } finally { await active.close(); }
 }));
 
 test('API key queries need no password or actor UID and preserve filters and pagination', () => fixture(async f => {
@@ -453,20 +573,21 @@ test('native ID query forwards include and preserves identity and organization c
 
 test('configuration and output redaction', () => {
   assert.ok(Config['~standard']);
-  assert.equal(resolveConfig().authMode, 'apiKey');
+  assert.equal(resolveConfig().authMode, 'session');
   assert.throws(() => resolveConfig({ baseUrl: 'https://example.com/api?x=1' }));
   assert.throws(() => resolveConfig({ orgNum: '1,2' }));
   assert.deepEqual(plugin.redact({ password: 'x', nested: { token: 'y' }, name: 'api_key', value: 'z' }), { password: '[redacted]', nested: { token: '[redacted]' }, name: 'api_key', value: '[redacted]' });
 });
 
-test('settings expose only non-credential live fields and preserve deployment authentication', () => {
+test('account settings mark the password secret and preserve administrator API-key configuration', () => {
   const live = plugin.Config({ baseUrl: 'https://example.com', orgNum: '1001', apiKeyEnv: 'DEPLOYMENT_KEY' });
   assert.equal(readPluginConfig(live).baseUrl, 'https://example.com');
   assert.equal(readPluginConfig(live).apiKeyEnv, 'DEPLOYMENT_KEY');
   for (const key of editableConfigKeys) assert.equal(plugin.Config.dict![key]!.meta.volatile, true);
-  assert.deepEqual(editableConfigKeys, ['baseUrl', 'orgNum', 'actorUid', 'actorNickname', 'timeoutMs']);
+  assert.deepEqual(editableConfigKeys, ['baseUrl', 'authMode', 'username', 'password', 'sessionEnabled', 'orgNum', 'actorUid', 'actorNickname', 'timeoutMs']);
+  assert.equal(plugin.Config.dict!.password!.meta.role, 'secret');
   for (const key of ['maxResults', 'maxUploadMiB', 'methodOverride']) assert.equal(plugin.Config.dict![key], undefined);
-  for (const key of ['apiKeyEnv', 'authMode', 'usernameEnv', 'passwordEnv', 'signCodeEnv']) assert.notEqual(plugin.Config.dict![key]!.meta.volatile, true);
+  for (const key of ['apiKeyEnv', 'usernameEnv', 'passwordEnv', 'signCodeEnv']) assert.notEqual(plugin.Config.dict![key]!.meta.volatile, true);
   assert.equal(Config({ orgNum: '1001' }).orgNum, '1001');
 });
 

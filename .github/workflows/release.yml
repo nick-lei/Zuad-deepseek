@@ -29,6 +29,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          npm pack --ignore-scripts
-          archive=$(node --input-type=module -e 'import p from "./package.json" with { type: "json" }; console.log(`${p.name}-${p.version}.tgz`);')
-          gh release create "$GITHUB_REF_NAME" "$archive" --verify-tag --title "Zuad Signage Assistant $GITHUB_REF_NAME" --generate-notes
+          npm run package:platforms
+          npm run verify:platforms
+          gh release create "$GITHUB_REF_NAME" dist/artifacts/* --verify-tag --title "Zuad Signage Assistant $GITHUB_REF_NAME" --generate-notes

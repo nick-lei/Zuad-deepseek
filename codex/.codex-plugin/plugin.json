@@ -1,0 +1,31 @@
+{
+  "name": "zuad-media",
+  "version": "0.1.0",
+  "description": "管理 Zuad 信发系统的素材、节目布局、播放安排和设备。",
+  "author": { "name": "nick-lei" },
+  "homepage": "https://github.com/nick-lei/Zuad-deepseek",
+  "repository": "https://github.com/nick-lei/Zuad-deepseek",
+  "license": "Unlicense",
+  "keywords": ["zuad", "digital-signage", "media", "programs", "devices"],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "Zuad 信发助手",
+    "shortDescription": "制作节目、管理素材、安排播放与操作设备",
+    "longDescription": "连接你的 Zuad 信发后台，通过对话查询和上传素材，制作九宫格、轮播、图文及分屏节目，修改已有节目，安排定时播放并下发到设备。保存的节目可以继续在原后台编辑。首次使用时，让助手提供登录入口，在本地连接页面填写后台地址并登录；之后直接说明需要完成的工作。保存节目不会自动下发，下发后可以继续查询设备任务结果。",
+    "developerName": "nick-lei",
+    "category": "Productivity",
+    "capabilities": ["Read", "Write"],
+    "websiteURL": "https://github.com/nick-lei/Zuad-deepseek",
+    "composerIcon": "./assets/zuad-icon.png",
+    "logo": "./assets/zuad-icon.png",
+    "logoDark": "./assets/zuad-icon.png",
+    "defaultPrompt": [
+      "连接我的 Zuad 信发系统，给我一个登录入口。",
+      "列出信发系统已有的节目、素材和设备。",
+      "用素材库里的图片制作九宫格节目，保存后先不要下发。"
+    ],
+    "brandColor": "#177D67",
+    "screenshots": []
+  }
+}

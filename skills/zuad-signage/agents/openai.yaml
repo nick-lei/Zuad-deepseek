@@ -1,0 +1,9 @@
+interface:
+  display_name: "Zuad 信发助手"
+  short_description: "管理信发素材与节目布局，安排播放、下发设备并查询任务执行结果"
+  default_prompt: "使用 $zuad-signage 检查信发系统连接，并列出已有的节目。"
+dependencies:
+  tools:
+    - type: "mcp"
+      value: "zuad-media"
+      description: "Zuad 信发系统素材、节目、播放和设备操作工具"

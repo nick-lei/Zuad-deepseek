@@ -2,13 +2,18 @@ import makeFetchCookie from 'fetch-cookie';
 import { CookieJar } from 'tough-cookie';
 import { randomUUID } from 'node:crypto';
 import { resource, object, id, ids, type ResourceName } from './catalog.js';
-import type { Config } from './config.js';
+import type { Config } from './core/config.js';
 
 export type Data = Record<string, any>;
 export interface Query { filters?: string[]; include?: string; order?: string; limit?: number; page?: number; shared?: boolean }
 export interface Identity { uid: string; nickname: string; orgNum: string; deviceIds: string[]; authMode: Config['authMode'] }
 export class ApiError extends Error {
   constructor(message: string, public readonly uncertain = false, public readonly status?: number) { super(message); }
+}
+export class SignInRequiredError extends ApiError {
+  constructor(public readonly reason: 'not_signed_in' | 'expired' | 'credentials_rejected', message: string, status?: number) {
+    super(message, false, status);
+  }
 }
 export const now = () => Math.floor(Date.now() / 1000);
 export const oid = () => randomUUID().replaceAll('-', '');
@@ -22,11 +27,37 @@ export class MediaClient {
   private readonly fetch: typeof globalThis.fetch;
   private identity: Identity | undefined;
   private loggingIn: Promise<Identity> | undefined;
+  private readonly cookies = new CookieJar();
+  private signCode = '';
+  private verified = false;
   private readonly shutdown = new AbortController();
   constructor(public readonly config: Config, fetchImpl: typeof globalThis.fetch = globalThis.fetch) {
-    this.fetch = config.authMode === 'session' ? makeFetchCookie(fetchImpl, new CookieJar()) as typeof globalThis.fetch : fetchImpl;
+    this.fetch = config.authMode === 'session' ? makeFetchCookie(fetchImpl, this.cookies) as typeof globalThis.fetch : fetchImpl;
   }
-  close() { this.shutdown.abort(); this.identity = undefined; }
+  close() { this.shutdown.abort(); this.identity = undefined; this.signCode = ''; this.verified = false; }
+  async logout() {
+    this.identity = undefined;
+    this.signCode = '';
+    this.verified = false;
+    await this.cookies.removeAllCookies();
+  }
+  connectionStatus() {
+    return {
+      connected: this.verified, baseUrl: this.config.baseUrl, authMode: this.config.authMode,
+      username: this.config.username || process.env[this.config.usernameEnv] || '',
+      hasPassword: Boolean(this.config.username ? this.config.password : process.env[this.config.passwordEnv]),
+      ...(this.verified && this.identity ? { ...this.identity } : {}),
+    };
+  }
+  async verifyConnection(signal?: AbortSignal) {
+    try {
+      const identity = await this.login(signal);
+      await this.query('programs', { include: 'id', limit: 1 }, signal);
+      this.identity = identity;
+      this.verified = true;
+      return { ...identity, verified: true };
+    } catch (error) { await this.logout(); throw error; }
+  }
   private signal(signal?: AbortSignal) {
     return AbortSignal.any([this.shutdown.signal, AbortSignal.timeout(this.config.timeoutMs), ...(signal ? [signal] : [])]);
   }
@@ -41,6 +72,7 @@ export class MediaClient {
       else url.searchParams.set(name, String(value));
     }
     const headers = new Headers({ Accept: binary ? '*/*' : 'application/json' });
+    if (!gateway && this.config.authMode === 'session' && this.signCode) headers.set('Sign-Code', this.signCode);
     if (path === '/api/v5/monitor_model/exportMonitor' && process.env[this.config.signCodeEnv]) headers.set('Sign-Code', process.env[this.config.signCodeEnv]!);
     const isMutation = method !== 'GET' || /\/(delPlan|gb28181)/.test(path);
     if (!gateway && (this.config.authMode === 'apiKey' || key || /^\/apikey\.php(?:\/|\?|$)/.test(path))) {
@@ -56,7 +88,11 @@ export class MediaClient {
     try {
       const response = await (gateway ? globalThis.fetch : this.fetch)(url, { method, headers, ...(payload === undefined ? {} : { body: payload }), signal: combinedSignal, redirect: 'error' });
       if (!response.ok) {
-        if (response.status === 401 || response.status === 403) this.identity = undefined;
+        if (!gateway && response.status === 401 && this.config.authMode === 'session') {
+          await this.logout();
+          throw new SignInRequiredError(path === '/api.php/login' ? 'credentials_rejected' : 'expired',
+            path === '/api.php/login' ? 'Login rejected; please sign in again in the plugin details.' : 'Your signage session has expired; please sign in again in the plugin details.', 401);
+        }
         throw new ApiError(`API ${method} ${url.pathname} returned HTTP ${response.status}`, isMutation && response.status >= 500, response.status);
       }
       if (binary) {
@@ -67,8 +103,10 @@ export class MediaClient {
       let value: any;
       try { value = text ? JSON.parse(text) : null; }
       catch { throw new ApiError('API returned invalid JSON; verify authentication and backend origin', isMutation); }
-      if (value && typeof value === 'object' && !Array.isArray(value) && (Number(value.code) >= 1000 || value.error))
+      if (value && typeof value === 'object' && !Array.isArray(value) && (Number(value.code) >= 1000 || value.error)) {
+        if (path === '/api.php/login') throw new SignInRequiredError('credentials_rejected', `Backend rejected login (code ${String(value.code ?? 'error')})`);
         throw new ApiError(`Backend rejected request (code ${String(value.code ?? 'error')})`);
+      }
       return value;
     } catch (error) {
       if (error instanceof ApiError) throw error;
@@ -83,33 +121,37 @@ export class MediaClient {
       if (!process.env[this.config.apiKeyEnv]) throw new Error(`Configure ${this.config.apiKeyEnv} in the Harness process environment`);
       return { uid: this.config.actorUid, nickname: this.config.actorNickname || 'API key', orgNum: this.config.orgNum, deviceIds: [], authMode: 'apiKey' };
     }
+    if (!this.config.sessionEnabled) throw new SignInRequiredError('not_signed_in', 'Please sign in to the signage system in the plugin details.');
     if (this.identity) return this.identity;
     if (this.loggingIn) return this.loggingIn;
     this.loggingIn = this.authenticate(signal);
-    try { return await this.loggingIn; } finally { this.loggingIn = undefined; }
+    try { return await this.loggingIn; }
+    catch (error) { await this.logout(); throw error; }
+    finally { this.loggingIn = undefined; }
   }
   private async authenticate(signal?: AbortSignal): Promise<Identity> {
-    if (!this.config.orgNum) throw new Error('Configure orgNum or ZUAD_ORG_NUM');
-    const username = process.env[this.config.usernameEnv];
-    const password = process.env[this.config.passwordEnv];
-    if (!username || !password) throw new Error(`Configure ${this.config.usernameEnv} and ${this.config.passwordEnv} in the Harness process environment`);
+    const username = this.config.username || process.env[this.config.usernameEnv];
+    const password = this.config.username ? this.config.password : process.env[this.config.passwordEnv];
+    if (!username || !password) throw new SignInRequiredError('not_signed_in', 'Please enter your account and password in the plugin details.');
     const data = object(await this.request('/api.php/login', 'POST', { username, password, orgNum: this.config.orgNum, orgNums: this.config.orgNum }, {}, signal), 'login response');
-    if ('code' in data || data.status === 0 || !data.id || String(data.org_num) !== this.config.orgNum)
-      throw new ApiError('Login rejected, disabled account, missing identity or organization mismatch');
+    if ('code' in data || data.status === 0 || !data.id || !data.org_num || (this.config.orgNum && String(data.org_num) !== this.config.orgNum))
+      throw new SignInRequiredError('credentials_rejected', 'Login rejected, disabled account, missing identity or organization mismatch');
+    const orgNum = id(data.org_num);
+    this.signCode = typeof data.sign_id === 'string' ? data.sign_id : '';
     let deviceIds = data.device_rules ? ids(data.device_rules) : [];
     // The React login context obtains device_rules from the role as well as the user.
     if (data.groupid) {
       const roleRows = records(await this.request('/api.php/records/think_auth_group', 'GET', undefined,
         { database: 'zuad_common', filter: [`id,eq,${id(data.groupid)}`], size: 1 }, signal));
       const role = roleRows[0];
-      if (!role || ![this.config.orgNum, '-1'].includes(String(role.org_num))) throw new ApiError('Cannot verify account role organization');
+      if (!role || ![orgNum, '-1'].includes(String(role.org_num))) throw new ApiError('Cannot verify account role organization');
       if (role.device_rules) {
         const roleIds = ids(role.device_rules);
         deviceIds = deviceIds.length ? deviceIds.filter(v => roleIds.includes(v)) : roleIds;
         if (!deviceIds.length) deviceIds = ['__none__'];
       }
     }
-    return this.identity = { uid: id(data.id), nickname: String(data.real_name ?? data.nickname ?? username), orgNum: this.config.orgNum, deviceIds, authMode: 'session' };
+    return this.identity = { uid: id(data.id), nickname: String(data.real_name || data.nickname || username), orgNum, deviceIds, authMode: 'session' };
   }
   async actor(signal?: AbortSignal): Promise<Identity> {
     const user = await this.login(signal);
@@ -152,6 +194,8 @@ export class MediaClient {
       if (terminalIds && !terminalIds.includes(String(row.device_id))) throw new ApiError('Backend returned a terminal outside the account scope');
     }
     // Some backends reduce page size, so a short page does not prove the list is complete.
+    this.identity = user;
+    this.verified = true;
     return { records: result, possiblyTruncated: result.length > 0, page };
   }
   async get(name: ResourceName, entityId: unknown, signal?: AbortSignal, shared = false, include?: string): Promise<Data> {

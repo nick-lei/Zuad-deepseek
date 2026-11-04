@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "zuad-media": {
+      "command": "node",
+      "args": ["./lib/mcp/stdio.js", "--host", "codex"],
+      "cwd": ".",
+      "startup_timeout_sec": 30,
+      "tool_timeout_sec": 300,
+      "env_vars": ["CODEX_HOME", "ZUAD_CODEX_DATA_DIR"]
+    }
+  }
+}
