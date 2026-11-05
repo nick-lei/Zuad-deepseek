@@ -29,6 +29,8 @@ With a plugin-capable Codex CLI installed, `node scripts/verify-codex-plugin.mjs
 
 The Git repository includes compiled `lib/` files so Git installation does not require an install-time build script. After changing `src/`, run `npm run build` and commit the matching `lib/` changes. CI checks that these outputs match.
 
+The DSH entry bundles its JavaScript dependencies after TypeScript compilation. This avoids a desktop host resolver failure when jsdom's `tr46` dependency requires the userland `punycode/` package. Host APIs and native canvas remain external; jsdom's stylesheet is embedded and its optional synchronous XHR worker retains its package path. `npm run verify:dsh` checks tool registration, fixture rendering and grid compilation against the distributed entry while rejecting an unbundled `punycode/` request. MCP distributions keep their separate runtime modules.
+
 ## Authentication
 
 Account login is the default. Enter the backend address, username and password in the plugin details and select Sign in and connect. `/api.php/login` supplies the user's organization and identity; subsequent requests use that account's cookies and, when returned, Sign-Code. The sign-in form uses automatic organization discovery and clears any previous organization override when connecting. Deployments may still specify an organization directly, which is checked against the login response. User and role device restrictions are retained.
@@ -46,7 +48,7 @@ The administrator may use `ZUAD_BASE_URL`, `ZUAD_ORG_NUM`, `ZUAD_ACTOR_UID`, `ZU
 In the DSH plugin installation dialog, use:
 
 ```text
-github:nick-lei/Zuad-deepseek#v0.1.0
+github:nick-lei/Zuad-deepseek#v0.1.1
 ```
 
 Or install a prebuilt `.tgz` attachment from the GitHub Releases page. Both the source tag and the package contain precompiled runtime files.
