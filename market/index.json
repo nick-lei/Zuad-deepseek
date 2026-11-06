@@ -21,6 +21,18 @@
       },
       "versions": [
         {
+          "version": "0.1.2",
+          "publishTimestamp": 1793939798,
+          "source": {
+            "type": "git",
+            "url": "https://github.com/nick-lei/Zuad-deepseek",
+            "commit": "b38f7f9a93220bbc9ceeaf1d76b849e683ad220d"
+          },
+          "engines": {
+            "dsh": "0.2.1-rc.2 || 0.2.1-rc.5 || 0.2.2-alpha.2"
+          }
+        },
+        {
           "version": "0.1.1",
           "publishTimestamp": 1793851038,
           "source": {
