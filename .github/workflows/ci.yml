@@ -26,3 +26,29 @@ jobs:
       - run: npm run verify:platforms
       - name: Verify Tracked Build
         run: git diff --exit-code -- lib/
+
+  host-compatibility:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        runtime:
+          - dsh: 0.2.1-rc.2
+            cordis: 4.0.5
+          - dsh: 0.2.2-alpha.2
+            cordis: 4.0.6-alpha.1
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24.22.1
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Install Isolated Host Interfaces
+        run: npm install --prefix test-results/dsh-host --ignore-scripts --no-audit --no-fund @deepseek-ai/cordis@${{ matrix.runtime.cordis }} @deepseek-ai/dsh-tools@${{ matrix.runtime.dsh }} @deepseek-ai/dsh-typert-protocol@${{ matrix.runtime.dsh }}
+      - name: Verify Host Compatibility
+        run: node scripts/verify-dsh-bundle.mjs
+        env:
+          ZUAD_DSH_HOST_ROOT: ${{ github.workspace }}/test-results/dsh-host
+          ZUAD_DSH_HOST_VERSION: ${{ matrix.runtime.dsh }}

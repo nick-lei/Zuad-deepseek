@@ -36,10 +36,10 @@ DSH 和 Codex 共用同一套信发业务功能。项目也提供 Claude Code、
 在 DeepSeek Harness 的“插件 → 添加插件”中填写下面的地址，安装后选择“立即启用”：
 
 ```text
-github:nick-lei/Zuad-deepseek#v0.1.1
+github:nick-lei/Zuad-deepseek#v0.1.2
 ```
 
-也可以在 [版本发布页](https://github.com/nick-lei/Zuad-deepseek/releases) 下载 `.tgz` 安装包，或将该附件的下载链接填入“添加插件”。支持 DSH `0.2.1-rc.5` 与 `0.2.2-alpha.2`；其他版本需要另行验证。
+也可以在插件市场搜索 `Zuad` 安装，或在 [版本发布页](https://github.com/nick-lei/Zuad-deepseek/releases) 下载 `.tgz` 安装包。`0.1.2` 支持 DSH `0.2.1-rc.2`、`0.2.1-rc.5` 与 `0.2.2-alpha.2`；其他版本需要另行验证。使用 `rc.2` 时，请确认安装包版本至少为 `0.1.2`，旧的 `0.1.1` 会被宿主判定为不兼容。
 
 使用“发现”页面安装时，先启用“自定义插件索引”，在“添加索引源”中填写：
 

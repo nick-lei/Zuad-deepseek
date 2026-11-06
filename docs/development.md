@@ -29,7 +29,9 @@ With a plugin-capable Codex CLI installed, `node scripts/verify-codex-plugin.mjs
 
 The Git repository includes compiled `lib/` files so Git installation does not require an install-time build script. After changing `src/`, run `npm run build` and commit the matching `lib/` changes. CI checks that these outputs match.
 
-The DSH entry bundles its JavaScript dependencies after TypeScript compilation. This avoids a desktop host resolver failure when jsdom's `tr46` dependency requires the userland `punycode/` package. Host APIs and native canvas remain external; jsdom's stylesheet is embedded and its optional synchronous XHR worker retains its package path. `npm run verify:dsh` checks tool registration, fixture rendering and grid compilation against the distributed entry while rejecting an unbundled `punycode/` request. MCP distributions keep their separate runtime modules.
+The DSH entry bundles its JavaScript dependencies after TypeScript compilation. This avoids a desktop host resolver failure when jsdom's `tr46` dependency requires the userland `punycode/` package. Host APIs and native canvas remain external; jsdom's stylesheet is embedded and its optional synchronous XHR worker retains its package path. `npm run verify:dsh` uses the real host tool registry and connection RPC to check registration, schema projection, sign-in recovery, argument errors, fixture rendering and grid compilation while rejecting an unbundled `punycode/` request. MCP distributions keep their separate runtime modules.
+
+DSH `0.2.1-rc.2`, `0.2.1-rc.5` and `0.2.2-alpha.2` are explicitly supported. Each tested prerelease has its own branch in `engines.dsh` and the DSH peer ranges; a later prerelease does not implicitly admit an earlier one. CI exercises the older and alpha host interfaces in isolated dependency trees on Linux and Windows. Set `ZUAD_DSH_HOST_ROOT` to a directory containing those host packages under `node_modules`, and `ZUAD_DSH_HOST_VERSION` to the expected version, to run the same verification locally.
 
 ## Authentication
 
@@ -48,13 +50,13 @@ The administrator may use `ZUAD_BASE_URL`, `ZUAD_ORG_NUM`, `ZUAD_ACTOR_UID`, `ZU
 In the DSH plugin installation dialog, use:
 
 ```text
-github:nick-lei/Zuad-deepseek#v0.1.1
+github:nick-lei/Zuad-deepseek#v0.1.2
 ```
 
 Or install a prebuilt `.tgz` attachment from the GitHub Releases page. Both the source tag and the package contain precompiled runtime files.
 
 ## Release
 
-Update the package version and lockfile, run the checks, rebuild `lib/` and commit. Push a matching `vX.Y.Z` tag. The release workflow verifies the version, installs locked dependencies, runs the tests, checks the tracked build output, builds and verifies the platform distributions and publishes the DSH archive, portable platform archives and SHA-256 checksums to GitHub Releases. It does not publish to npm or submit to other marketplaces. Generated runtime packages remain private until a publisher explicitly configures an npm release.
+Update the package version and lockfile, run the checks, rebuild `lib/` and commit. Push a matching `vX.Y.Z` tag. The release workflow verifies the version, installs locked dependencies, runs the tests, checks the tracked build output, builds and verifies the platform distributions and publishes the DSH archive, portable platform archives and SHA-256 checksums to GitHub Releases. The DSH package is also published as `dsh-plugin-zuad-media.tgz` with identical bytes, so marketplace entries may use a stable `releases/latest/download/dsh-plugin-zuad-media.tgz` URL. It does not publish to npm or submit to other marketplaces. Generated runtime packages remain private until a publisher explicitly configures an npm release.
 
 The repository uses the Unlicense chosen in its initial commit. See `LICENSE`. The bundled Noto font has its own license in `assets/fonts/LICENSE`.

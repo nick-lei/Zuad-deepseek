@@ -1,4 +1,4 @@
-import { mkdir, readFile } from 'node:fs/promises';
+import { cp, mkdir, readFile } from 'node:fs/promises';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
@@ -11,7 +11,9 @@ const artifacts = join(root, 'dist/artifacts');
 const outputs = await buildPlatforms();
 await mkdir(artifacts, { recursive: true });
 const packed = JSON.parse(await npm(['pack', '--ignore-scripts', '--json', '--pack-destination', artifacts], root));
-const files = [packed[0].filename];
+const stableDsh = 'dsh-plugin-zuad-media.tgz';
+await cp(join(artifacts, packed[0].filename), join(artifacts, stableDsh));
+const files = [packed[0].filename, stableDsh];
 for (const { platform, version, directory } of outputs) {
   const filename = `zuad-media-${platform}-${version}.tar.gz`;
   await run('tar', ['-czf', join(artifacts, filename), '-C', directory, '.'], root);
