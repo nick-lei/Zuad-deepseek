@@ -5,7 +5,7 @@ This project provides a DeepSeek Harness bundle, a native Codex plugin and porta
 ## Requirements
 
 - Node.js 24.22.1 or later in the Node.js 24 release line.
-- DeepSeek Harness 0.2.1-rc.5 or 0.2.2-alpha.2 for the DSH integration; Codex with MCP support for the Codex integration.
+- DeepSeek Harness 0.2.1-rc.2, 0.2.1-rc.5, 0.2.2-alpha.2 or 0.2.2-rc.1 for the DSH integration; Codex with MCP support for the Codex integration.
 - An existing Zuad backend and organization authorization.
 
 ## Build And Test
@@ -31,7 +31,7 @@ The Git repository includes compiled `lib/` files so Git installation does not r
 
 The DSH entry bundles its JavaScript dependencies after TypeScript compilation. This avoids a desktop host resolver failure when jsdom's `tr46` dependency requires the userland `punycode/` package. Host APIs and native canvas remain external; jsdom's stylesheet is embedded and its optional synchronous XHR worker retains its package path. `npm run verify:dsh` uses the real host tool registry and connection RPC to check registration, schema projection, sign-in recovery, argument errors, fixture rendering and grid compilation while rejecting an unbundled `punycode/` request. MCP distributions keep their separate runtime modules.
 
-DSH `0.2.1-rc.2`, `0.2.1-rc.5` and `0.2.2-alpha.2` are explicitly supported. Each tested prerelease has its own branch in `engines.dsh` and the DSH peer ranges; a later prerelease does not implicitly admit an earlier one. CI exercises the older and alpha host interfaces in isolated dependency trees on Linux and Windows. Set `ZUAD_DSH_HOST_ROOT` to a directory containing those host packages under `node_modules`, and `ZUAD_DSH_HOST_VERSION` to the expected version, to run the same verification locally.
+DSH `0.2.1-rc.2`, `0.2.1-rc.5`, `0.2.2-alpha.2` and `0.2.2-rc.1` are explicitly supported. Each tested prerelease has its own branch in `engines.dsh` and the DSH peer ranges; a later prerelease does not implicitly admit an earlier one. CI exercises the older, alpha and current release-candidate host interfaces in isolated dependency trees on Linux and Windows. The `0.2.2-rc.1` host uses Cordis `4.1.0`. Set `ZUAD_DSH_HOST_ROOT` to a directory containing those host packages under `node_modules`, and `ZUAD_DSH_HOST_VERSION` to the expected version, to run the same verification locally. When diagnosing a refusal, read the actual `runtimeVersion` from the install log; the market UI version is a separate package version.
 
 ## Authentication
 
@@ -50,7 +50,7 @@ The administrator may use `ZUAD_BASE_URL`, `ZUAD_ORG_NUM`, `ZUAD_ACTOR_UID`, `ZU
 In the DSH plugin installation dialog, use:
 
 ```text
-github:nick-lei/Zuad-deepseek#v0.1.2
+github:nick-lei/Zuad-deepseek#v0.1.3
 ```
 
 Or install a prebuilt `.tgz` attachment from the GitHub Releases page. Both the source tag and the package contain precompiled runtime files.
